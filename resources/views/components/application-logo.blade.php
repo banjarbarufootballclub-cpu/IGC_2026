@@ -1,0 +1,1 @@
+<img src="{{ asset('logo-igc.png') }}" alt="Logo IGC" class="w-24 h-24 drop-shadow-md">
