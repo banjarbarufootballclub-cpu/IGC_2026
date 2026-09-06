@@ -18,12 +18,8 @@ return new class extends Migration
             $table->string('nama_pemain');
             $table->string('nisn');
             $table->string('tempat_lahir');
-            $table->date('tanggal_lahir');
-            $table->integer('tinggi_badan');
-            $table->integer('berat_badan');
-            $table->string('posisi');
-            
-            // Data Jalur File Upload
+            $table->date('tanggal_lahir')
+                        // Data Jalur File Upload
             $table->string('foto');
             $table->string('akte');
             $table->string('kk');
