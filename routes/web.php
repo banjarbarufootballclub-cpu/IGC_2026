@@ -9,6 +9,7 @@ use App\Http\Controllers\PemainController;
 use App\Http\Controllers\IdCardController;
 
 Route::get('/pemain/{id}/cetak-idcard', [IdCardController::class, 'cetak'])->name('pemain.idcard');
+Route::get('/daftar-tim', [TeamController::class, 'create'])->name('daftar.tim.create');
 Route::post('/daftar-tim', [TeamController::class, 'store'])->name('daftar.tim');
 Route::get('/pemain', [PemainController::class, 'index'])->name('pemain.index');
 Route::post('/pemain', [PemainController::class, 'store'])->name('pemain.store');
