@@ -2,171 +2,134 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cetak ID Card - {{ $team->nama_tim ?? 'Tim' }}</title>
+    <title>Cetak ID Card - {{ $tim->nama_tim ?? 'Tim' }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #eee;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin: 0;
             padding: 20px;
         }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-        .card {
-            width: 250px;
-            height: 380px;
-            background: #fff;
-            border: 1px solid #333;
-            border-radius: 8px;
-            overflow: hidden;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            page-break-inside: avoid;
+        .id-card {
+            width: 320px;
+            height: 215px;
+            background: #ffffff;
+            border: 2px solid #333333;
+            border-radius: 12px;
+            color: #000000;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            box-sizing: border-box;
             margin-bottom: 20px;
+            overflow: hidden; /* Agar watermark tidak keluar kartu */
         }
-        .card-header {
+        /* Style untuk Watermark SAH */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 70px;
+            font-weight: bold;
+            color: rgba(0, 180, 0, 0.12); /* Warna hijau transparan */
+            z-index: 0;
+            user-select: none;
+            pointer-events: none;
+            letter-spacing: 5px;
+        }
+        .header, .content, .footer {
+            position: relative;
+            z-index: 1; /* Supaya teks tetap di atas watermark */
+        }
+        .header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px;
-            border-bottom: 2px solid #b30000;
+            border-bottom: 2px solid #000000;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
         }
-        .header-logo {
-            width: 40px;
-            height: 40px;
+        .header h3 {
+            margin: 0;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #000000;
+        }
+        .header img {
+            height: 24px;
+            width: auto;
             object-fit: contain;
         }
-        .header-text {
-            font-size: 9px;
-            font-weight: bold;
-            text-align: left;
-            line-height: 1.3;
-            color: #333;
-        }
-        .card-body {
-            padding: 15px;
-            flex-grow: 1;
+        .content {
+            display: flex;
+            align-items: center;
         }
         .photo {
-            width: 90px;
-            height: 110px;
-            border: 2px solid #ddd;
-            margin: 0 auto 10px auto;
-            background-size: cover;
-            background-position: center;
-            border-radius: 5px;
-        }
-        .name {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        .role {
-            font-size: 11px;
-            color: #b30000;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-transform: uppercase;
+            width: 70px;
+            height: 90px;
+            background-color: #ccc;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 2px solid #000000;
         }
         .details {
-            font-size: 12px;
-            text-align: left;
-            border-top: 1px dashed #ccc;
-            padding-top: 10px;
+            margin-left: 15px;
+            font-size: 11px;
+            color: #000000;
         }
         .details p {
-            margin: 5px 0;
+            margin: 2px 0;
         }
-        .card-footer {
-            background-color: #333;
-            color: white;
-            padding: 8px;
-            font-size: 10px;
-            font-weight: bold;
-            letter-spacing: 1px;
+        .details strong {
+            color: #000000;
+        }
+        .footer {
+            position: absolute;
+            bottom: 8px;
+            left: 15px;
+            right: 15px;
+            text-align: center;
+            font-size: 9px;
+            border-top: 1px solid #cccccc;
+            padding-top: 4px;
+            color: #555555;
         }
         @media print {
-            body {
-                background: none;
-                padding: 0;
-            }
-            .no-print {
-                display: none;
-            }
+            body { background: none; padding: 0; }
+            .id-card { page-break-inside: avoid; border: 1px solid #000; }
         }
     </style>
 </head>
 <body onload="window.print()">
 
-    <div class="container">
-        <!-- Loop ID Card Pemain -->
-        @foreach($team->pemains as $p)
-        <div class="card">
-            <div class="card-header">
-                <!-- Ganti nama file logo.png sesuai dengan nama file logo Anda di folder public -->
-                <img src="{{ asset('logo.png') }}" alt="Logo IGC" class="header-logo">
-                <div class="header-text">
-                    INDONESIA GRASSROOT CHAMPIONSHIP<br>
-                    <span style="color: #b30000;">2026 REGIONAL KALSELTENG</span>
-                </div>
-            </div>
-            <div class="card-body">
-                @if($p->pas_foto)
-                    <div class="photo" style="background-image: url('{{ asset('storage/' . $p->pas_foto) }}');"></div>
-                @else
-                    <div class="photo" style="display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">No Photo</div>
-                @endif
-                <div class="name">{{ $p->nama_pemain }}</div>
-                <div class="role">PEMAIN</div>
-                <div class="details">
-                    <p><strong>SSB:</strong> {{ $team->nama_tim }}</p>
-                    <p><strong>Kategori:</strong> {{ $team->kategori_usia }}</p>
-                </div>
-            </div>
-            <div class="card-footer">
-                SAH & TERVALIDASI
-            </div>
-        </div>
-        @endforeach
+    @foreach($tim->pemains ?? [] as $p)
+    <div class="id-card">
+        <!-- Watermark SAH -->
+        <div class="watermark">SAH</div>
 
-        <!-- Loop ID Card Official -->
-        @foreach($team->officials as $o)
-        <div class="card">
-            <div class="card-header">
-                <img src="{{ asset('logo.png') }}" alt="Logo IGC" class="header-logo">
-                <div class="header-text">
-                    INDONESIA GRASSROOT CHAMPIONSHIP<br>
-                    <span style="color: #b30000;">2026 REGIONAL KALSELTENG</span>
-                </div>
-            </div>
-            <div class="card-body">
-                @if($o->pas_foto)
-                    <div class="photo" style="background-image: url('{{ asset('storage/' . $o->pas_foto) }}');"></div>
-                @else
-                    <div class="photo" style="display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">No Photo</div>
-                @endif
-                <div class="name">{{ $o->nama_official }}</div>
-                <div class="role">OFFICIAL ({{ $o->jabatan }})</div>
-                <div class="details">
-                    <p><strong>SSB:</strong> {{ $team->nama_tim }}</p>
-                    <p><strong>Kategori:</strong> {{ $team->kategori_usia }}</p>
-                </div>
-            </div>
-            <div class="card-footer">
-                SAH & TERVALIDASI
+        <div class="header">
+            <h3>PLAYER CARD</h3>
+            <img src="{{ asset('logo-igc.png') }}" alt="Logo IGC">
+        </div>
+        <div class="content">
+            <img src="{{ asset('storage/' . $p->foto) }}" alt="Foto" class="photo">
+            <div class="details">
+                <p>Nama: <br><strong>{{ $p->nama }}</strong></p>
+                <p>Tim: <br><strong>{{ $tim->nama_tim ?? '-' }}</strong></p>
+                <p>Kelompok Umur: <strong>{{ $tim->kelompok_umur ?? $p->kelompok_umur ?? '-' }}</strong></p>
+                <p>No. Punggung: <strong>{{ $p->no_punggung ?? '-' }}</strong></p>
             </div>
         </div>
-        @endforeach
+        <div class="footer">
+            Resmi Terdaftar - Turnamen Sepak Bola 2026
+        </div>
     </div>
+    @endforeach
 
 </body>
 </html>

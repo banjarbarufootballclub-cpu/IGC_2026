@@ -6,7 +6,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\PemainController;
+use App\Http\Controllers\IdCardController;
 
+Route::get('/pemain/{id}/cetak-idcard', [IdCardController::class, 'cetak'])->name('pemain.idcard');
 Route::post('/daftar-tim', [TeamController::class, 'store'])->name('daftar.tim');
 Route::get('/pemain', [PemainController::class, 'index'])->name('pemain.index');
 Route::post('/pemain', [PemainController::class, 'store'])->name('pemain.store');
