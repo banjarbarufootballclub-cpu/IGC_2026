@@ -183,66 +183,37 @@
         </tr>
     </thead>
     <tbody class="bg-white divide-y divide-gray-200 text-sm">
-        @isset($officials)
-            @forelse($officials as $o)
-                <tr>
-                    <td class="px-4 py-2">
-                        @if($o->foto)
-                            <img src="{{ asset('storage/' . $o->foto) }}" class="w-10 h-10 object-cover rounded-full">
-                        @else
-                            -
-                        @endif
-                    </td>
-                    <td class="px-4 py-2">{{ $o->nama }}</td>
-                    <td class="px-4 py-2">{{ $o->jabatan }}</td>
-                    <td class="px-4 py-2 text-center">
-                        @if(isset($o->is_sah) && $o->is_sah == 1)
-                            <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full font-semibold">Sah</span>
-                        @else
-                            <span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full font-semibold">Menunggu</span>
-                        @endif
-                    </td>
-                    <td class="px-4 py-2 text-center">
-                        <!-- Tombol Aksi / Hapus Anda di sini -->
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada official.</td>
-                </tr>
-            @endforelse
-        @endisset
+        @forelse($officials as $o)
+            <tr>
+                <td class="px-4 py-2">
+                    @if($o->foto)
+                        <img src="{{ asset('storage/' . $o->foto) }}" class="w-10 h-10 object-cover rounded-full">
+                    @else
+                        -
+                    @endif
+                </td>
+                <td class="px-4 py-2">{{ $o->nama }}</td>
+                <td class="px-4 py-2">{{ $o->jabatan }}</td>
+                <td class="px-4 py-2 text-center">
+                    @if(isset($o->is_sah) && $o->is_sah == 1)
+                        <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full font-semibold">Sah</span>
+                    @else
+                        <span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full font-semibold">Menunggu</span>
+                    @endif
+                </td>
+                <td class="px-4 py-2 text-center">
+                    <form action="{{ route('official.destroy', $o->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus official ini?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-600 hover:text-red-900 font-semibold">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada official.</td>
+            </tr>
+        @endforelse
     </tbody>
 </table>
-                            <tbody class="bg-white divide-y divide-gray-200 text-sm">
-                                @isset($officials)
-                                    @forelse($officials as $o)
-                                        <tr>
-                                            <td class="px-4 py-2">
-                                                @if($o->foto)
-                                                    <img src="{{ asset('storage/' . $o->foto) }}" class="w-10 h-10 object-cover rounded-full">
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>
-                                            <td class="px-4 py-2 font-medium text-gray-900">{{ $o->nama_official }}</td>
-                                            <td class="px-4 py-2">{{ $o->jabatan }}</td>
-                                            <td class="px-4 py-2 text-center">
-                                                <form action="{{ route('official.destroy', $o->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus official ini?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900 text-xs font-bold">Hapus</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="4" class="px-4 py-4 text-center text-gray-500 text-sm">Belum ada official yang didaftarkan.</td>
-                                        </tr>
-                                    @endforelse
-                                @endisset
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-</x-app-layout>
+               </x-app-layout>
